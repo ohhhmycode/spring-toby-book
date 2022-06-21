@@ -7,7 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDao {
+/**
+ * @author 김동욱, dongwook_@a2dcorp.co.kr
+ * @version 1.0
+ * @since 2022-06-21
+ */
+public abstract class AbstractUserDao {
+
     public void add(User user) throws ClassNotFoundException, SQLException {
         Connection c = getConnection();
 
@@ -42,9 +48,6 @@ public class UserDao {
         return user;
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/springtobybook", "spring", "book");
-        return c;
-    }
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
+
 }
