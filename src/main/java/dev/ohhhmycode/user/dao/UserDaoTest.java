@@ -1,18 +1,13 @@
-package dev.ohhhmycode.user;
+package dev.ohhhmycode.user.dao;
 
-import dev.ohhhmycode.user.dao.UserDao;
 import dev.ohhhmycode.user.domain.User;
 import java.sql.SQLException;
 
-/**
- * @author 김동욱, dongwook_@a2dcorp.co.kr
- * @version 1.0
- * @since 2022-06-20
- */
-public class UserMain {
+
+public class UserDaoTest {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao();
+        UserDao dao = new DaoFactory().userDao();
 
         User user = new User();
         user.setId("ohhhmycode");

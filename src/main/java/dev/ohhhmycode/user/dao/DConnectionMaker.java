@@ -9,10 +9,10 @@ import java.sql.SQLException;
  * @version 1.0
  * @since 2022-06-21
  */
-public class NUserDao extends AbstractUserDao {
+public class DConnectionMaker implements ConnectionMaker {
 
     @Override
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
+    public Connection makeConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/springtobybook", "spring", "book");
         return c;
