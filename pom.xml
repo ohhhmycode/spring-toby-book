@@ -78,5 +78,13 @@
       <systemPath>${project.lib.path}/spring-expression-3.0.7.RELEASE.jar</systemPath>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>org.springframework.jdbc</artifactId>
+      <version>${springframework.version}</version>
+      <scope>system</scope>
+      <systemPath>${project.lib.path}/spring-jdbc-3.0.7.RELEASE.jar</systemPath>
+    </dependency>
+
   </dependencies>
 </project>
