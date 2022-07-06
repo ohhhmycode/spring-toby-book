@@ -86,5 +86,13 @@
       <systemPath>${project.lib.path}/spring-jdbc-3.0.7.RELEASE.jar</systemPath>
     </dependency>
 
+    <dependency>
+      <groupId>org.junit</groupId>
+      <artifactId>com.springsource.org.junit</artifactId>
+      <version>4.7.0</version>
+      <scope>system</scope>
+      <systemPath>${project.lib.path}/com.springsource.org.junit-4.7.0.jar</systemPath>
+    </dependency>
+
   </dependencies>
 </project>
