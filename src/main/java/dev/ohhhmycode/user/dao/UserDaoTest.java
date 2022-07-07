@@ -6,6 +6,8 @@ import static org.junit.Assert.assertThat;
 import dev.ohhhmycode.user.domain.User;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -13,14 +15,22 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class UserDaoTest {
 
+    private UserDao dao;
+    private User user1;
+    private User user2;
+    private User user3;
+
+    @Before
+    public void setUp() {
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        dao = context.getBean("userDao", UserDao.class);
+        user1 = new User("tester01", "테스터01", "t1-1234");
+        user2 = new User("tester02", "테스터02", "t2-1234");
+        user3 = new User("tester03", "테스터03", "t3-1234");
+    }
+
     @Test
     public void addAndGet() throws SQLException, ClassNotFoundException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-        UserDao dao = context.getBean("userDao", UserDao.class);
-
-        User user1 = new User("tester01", "테스터01", "t1-1234");
-        User user2 = new User("tester02", "테스터02", "t2-1234");
-
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
@@ -39,14 +49,6 @@ public class UserDaoTest {
 
     @Test
     public void count() throws SQLException, ClassNotFoundException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-
-        User user1 = new User("tester01", "테스터01", "t1-1234");
-        User user2 = new User("tester02", "테스터02", "t2-1234");
-        User user3 = new User("tester03", "테스터03", "t3-1234");
-
-        UserDao dao = context.getBean("userDao", UserDao.class);
-
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
@@ -62,9 +64,6 @@ public class UserDaoTest {
 
     @Test(expected = NoSuchElementException.class)
     public void getUserFailure() throws SQLException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-
-        UserDao dao = context.getBean("userDao", UserDao.class);
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
