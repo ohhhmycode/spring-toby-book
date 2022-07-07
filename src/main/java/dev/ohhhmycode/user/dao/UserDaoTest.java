@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import dev.ohhhmycode.user.domain.User;
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -57,6 +58,17 @@ public class UserDaoTest {
 
         dao.add(user3);
         assertThat(dao.getCount(), is(3));
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void getUserFailure() throws SQLException {
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+
+        UserDao dao = context.getBean("userDao", UserDao.class);
+        dao.deleteAll();
+        assertThat(dao.getCount(), is(0));
+
+        dao.get("unknown_id");
     }
 
 }
