@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--
+create database springtobybook_test default character set utf-8;
+grant all privileges on springtobybook_test.* to spring@'localhost';
+grant all privileges on springtobybook_test.* to spring@'%';
+create table users (
+    id varchar(10) primary key,
+    name varchar(20) not null,
+    password varchar(20) not null
+);
+-->
+
+  <bean id="dataSource"
+    class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+    <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+    <property name="url" value="jdbc:mysql://localhost/springtobybook_test" />
+    <property name="username" value="spring" />
+    <property name="password" value="book" />
+  </bean>
+
+  <bean id="userDao" class="dev.ohhhmycode.user.dao.UserDao">
+    <property name="dataSource" ref="dataSource" />
+  </bean>
+
+</beans>
