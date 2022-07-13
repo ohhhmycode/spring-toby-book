@@ -98,8 +98,8 @@ public class UserDao {
 
         try {
             c = dataSource.getConnection();
-            ps = c.prepareStatement("delete from users");
-            ps.executeUpdate();
+            StatementStrategy strategy = new DeleteAllStatement();
+            ps = strategy.makePreparedStatement(c);
         } catch (SQLException e) {
             throw e;
         } finally {
