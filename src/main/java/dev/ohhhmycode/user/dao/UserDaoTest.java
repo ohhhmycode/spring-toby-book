@@ -30,10 +30,14 @@ public class UserDaoTest {
 
     @Before
     public void setUp() {
-        dao = new UserDao();
         DataSource dataSource = new SingleConnectionDataSource(
             "jdbc:mysql://localhost/springtobybook_test", "spring", "book", true);
+        JdbcContext jdbcContext = new JdbcContext();
+        jdbcContext.setDataSource(dataSource);
+
+        dao = new UserDao();
         dao.setDataSource(dataSource);
+        dao.setJdbcContext(jdbcContext);
 
         user1 = new User("tester01", "테스터01", "t1-1234");
         user2 = new User("tester02", "테스터02", "t2-1234");
