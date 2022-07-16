@@ -12,6 +12,16 @@ import java.util.List;
 public class UserDao {
 
     private JdbcTemplate jdbcTemplate;
+    private RowMapper<User> userMapper = new RowMapper<>() {
+        @Override
+        public User mapRow(ResultSet rs, int i) throws SQLException {
+            User user = new User();
+            user.setId(rs.getString("id"));
+            user.setName(rs.getString("name"));
+            user.setPassword(rs.getString("password"));
+            return user;
+        }
+    };
 
     public void setJdbcTemplate(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -26,16 +36,7 @@ public class UserDao {
     public User get(String id) throws SQLException {
         return jdbcTemplate.queryForObject("select * from users where id = ?",
                 new Object[]{id},
-                new RowMapper<User>() {
-                    @Override
-                    public User mapRow(ResultSet rs, int i) throws SQLException {
-                        User user = new User();
-                        user.setId(rs.getString("id"));
-                        user.setName(rs.getString("name"));
-                        user.setPassword(rs.getString("password"));
-                        return user;
-                    }
-                });
+                userMapper);
     }
 
     public void deleteAll() throws SQLException {
@@ -48,16 +49,7 @@ public class UserDao {
 
     public List<User> getAll() {
         return jdbcTemplate.query("select * from users order by id",
-                new RowMapper<User>() {
-                    @Override
-                    public User mapRow(ResultSet rs, int i) throws SQLException {
-                        User user = new User();
-                        user.setId(rs.getString("id"));
-                        user.setName(rs.getString("name"));
-                        user.setPassword(rs.getString("password"));
-                        return user;
-                    }
-                });
+                userMapper);
     }
 
 }
