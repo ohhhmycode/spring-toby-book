@@ -1,6 +1,7 @@
 package dev.ohhhmycode.user.dao;
 
 import dev.ohhhmycode.user.domain.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -79,14 +80,7 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException {
-        this.jdbcContext.workWithStatementStrategy(
-                new StatementStrategy() {
-                    @Override
-                    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
-                        return c.prepareStatement("delete from users");
-                    }
-                }
-        );
+        executeSql("delete from users");
     }
 
     public int getCount() throws SQLException {
@@ -148,5 +142,16 @@ public class UserDao {
                 }
             }
         }
+    }
+
+    private void executeSql(final String query) throws SQLException {
+        this.jdbcContext.workWithStatementStrategy(
+                new StatementStrategy() {
+                    @Override
+                    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                        return c.prepareStatement(query);
+                    }
+                }
+        );
     }
 }
