@@ -38,7 +38,7 @@ public class UserDaoTest {
         jdbcContext.setDataSource(dataSource);
 
         dao = new UserDao();
-        dao.setDataSource(dataSource);
+        dao.setJdbcTemplate(dataSource);
 
         user1 = new User("tester01", "테스터01", "t1-1234");
         user2 = new User("tester02", "테스터02", "t2-1234");
