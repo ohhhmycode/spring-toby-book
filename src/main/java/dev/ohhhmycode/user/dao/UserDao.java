@@ -1,6 +1,7 @@
 package dev.ohhhmycode.user.dao;
 
 import dev.ohhhmycode.user.domain.User;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,24 +14,19 @@ public class UserDao {
 
     private JdbcContext jdbcContext;
     private DataSource dataSource;
+    private JdbcTemplate jdbcTemplate;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.jdbcContext = new JdbcContext();
         this.jdbcContext.setDataSource(dataSource);
     }
 
-    public void add(final User user) throws SQLException {
-        this.jdbcContext.workWithStatementStrategy(new StatementStrategy() {
-            @Override
-            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
-                PreparedStatement ps = c.prepareStatement("insert into users (id, name, password) values (?, ?, ?)");
-                ps.setString(1, user.getId());
-                ps.setString(2, user.getName());
-                ps.setString(3, user.getPassword());
-                return ps;
-            }
-        });
+    public void add(final User user) {
+        this.jdbcTemplate.update(
+                "insert into users (id, name, password) values (?, ?, ?)",
+                user.getId(), user.getName(), user.getPassword());
     }
 
     public User get(String id) throws SQLException {
@@ -80,7 +76,7 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException {
-        this.jdbcContext.executeSql("delete from users");
+        this.jdbcTemplate.update("delete from users");
     }
 
     public int getCount() throws SQLException {
