@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -76,7 +77,7 @@ public class UserDaoTest {
         assertThat(dao.getCount(), is(3));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = EmptyResultDataAccessException.class)
     public void getUserFailure() throws SQLException {
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
