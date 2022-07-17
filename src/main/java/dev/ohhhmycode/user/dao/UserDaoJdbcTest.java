@@ -6,39 +6,43 @@ import static org.junit.Assert.assertThat;
 import dev.ohhhmycode.user.domain.User;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import javax.sql.DataSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = { "/test-applicationContext.xml" })
-public class UserDaoTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/test-applicationContext.xml" })
+public class UserDaoJdbcTest {
 
-//    @Autowired
+    @Autowired
     private UserDao dao;
+
+    @Autowired
+    private DataSource dataSource;
+
     private User user1;
     private User user2;
     private User user3;
 
     @Before
     public void setUp() {
-        DataSource dataSource = new SingleConnectionDataSource(
-            "jdbc:mysql://localhost/springtobybook_test", "spring", "book", true);
-        JdbcContext jdbcContext = new JdbcContext();
-        jdbcContext.setDataSource(dataSource);
-
-        dao = new UserDao();
-        dao.setJdbcTemplate(dataSource);
+//        DataSource dataSource = new SingleConnectionDataSource(
+//            "jdbc:mysql://localhost/springtobybook_test", "spring", "book", true);
+//
+//        dao = new UserDaoJdbc();
+//        dao.setDataSource(dataSource);
 
         user1 = new User("tester01", "테스터01", "t1-1234");
         user2 = new User("tester02", "테스터02", "t2-1234");
@@ -61,6 +65,27 @@ public class UserDaoTest {
         User userget2 = dao.get(user2.getId());
         assertThat(userget2.getName(), is(user2.getName()));
         assertThat(userget2.getPassword(), is(user2.getPassword()));
+    }
+
+    @Test(expected = DataAccessException.class)
+    public void duplicateKey() {
+        dao.deleteAll();
+        dao.add(user1);
+        dao.add(user1);
+    }
+
+    @Test
+    public void sqlExceptionTranslate() {
+        dao.deleteAll();
+
+        try {
+            dao.add(user1);
+            dao.add(user1);
+        } catch (DuplicateKeyException ex) {
+            SQLException sqlEx = (SQLException) ex.getRootCause();
+            SQLExceptionTranslator set = new SQLErrorCodeSQLExceptionTranslator(this.dataSource);
+            assertThat(set.translate(null, null, sqlEx), is(DuplicateKeyException.class));
+        }
     }
 
     @Test
