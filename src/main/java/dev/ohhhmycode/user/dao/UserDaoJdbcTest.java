@@ -3,6 +3,7 @@ package dev.ohhhmycode.user.dao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import dev.ohhhmycode.user.domain.Level;
 import dev.ohhhmycode.user.domain.User;
 import java.sql.SQLException;
 import java.util.List;
@@ -38,15 +39,9 @@ public class UserDaoJdbcTest {
 
     @Before
     public void setUp() {
-//        DataSource dataSource = new SingleConnectionDataSource(
-//            "jdbc:mysql://localhost/springtobybook_test", "spring", "book", true);
-//
-//        dao = new UserDaoJdbc();
-//        dao.setDataSource(dataSource);
-
-        user1 = new User("tester01", "테스터01", "t1-1234");
-        user2 = new User("tester02", "테스터02", "t2-1234");
-        user3 = new User("tester03", "테스터03", "t3-1234");
+        user1 = new User("tester01", "테스터01", "t1-1234", Level.BASIC, 1, 0);
+        user2 = new User("tester02", "테스터02", "t2-1234", Level.SILVER, 55, 10);
+        user3 = new User("tester03", "테스터03", "t3-1234", Level.GOLD, 100, 40);
     }
 
     @Test
@@ -141,6 +136,9 @@ public class UserDaoJdbcTest {
         assertThat(user1.getId(), is(user2.getId()));
         assertThat(user1.getName(), is(user2.getName()));
         assertThat(user1.getPassword(), is(user2.getPassword()));
+        assertThat(user1.getLevel(), is(user2.getLevel()));
+        assertThat(user1.getLogin(), is(user2.getLogin()));
+        assertThat(user1.getRecommend(), is(user2.getRecommend()));
     }
 
 }
