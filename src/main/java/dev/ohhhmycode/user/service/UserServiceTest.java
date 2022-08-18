@@ -13,8 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Arrays;
 import java.util.List;
 
-import static dev.ohhhmycode.user.service.UserService.MIN_LOGCOUNT_FOR_SILVER;
-import static dev.ohhhmycode.user.service.UserService.MIN_RECOMMEND_FOR_GOLD;
+import static dev.ohhhmycode.user.service.CountingBasedUserLevelUpgradePolicy.MIN_LOGCOUNT_FOR_SILVER;
+import static dev.ohhhmycode.user.service.CountingBasedUserLevelUpgradePolicy.MIN_RECOMMEND_FOR_GOLD;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;

@@ -1,16 +1,21 @@
-package dev.ohhhmycode.user.domain;
+package dev.ohhhmycode.user.service;
 
+import dev.ohhhmycode.user.domain.Level;
+import dev.ohhhmycode.user.domain.User;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class UserTest {
-    User user;
+public class CountingBasedUserLevelPolicyTest {
+
+    private UserLevelUpgradePolicy userLevelUpgradePolicy;
+    private User user;
 
     @Before
     public void setUp() {
+        userLevelUpgradePolicy = new CountingBasedUserLevelUpgradePolicy();
         user = new User();
     }
 
@@ -22,7 +27,7 @@ public class UserTest {
                 continue;
             }
             user.setLevel(level);
-            user.upgradeLevel();
+            userLevelUpgradePolicy.upgradeLevel(user);
             assertThat(user.getLevel(), is(level.nextLevel()));
         }
     }
@@ -35,7 +40,8 @@ public class UserTest {
                 continue;
             }
             user.setLevel(level);
-            user.upgradeLevel();
+            userLevelUpgradePolicy.upgradeLevel(user);
         }
     }
+
 }
