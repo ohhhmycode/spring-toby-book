@@ -3,6 +3,7 @@ package dev.ohhhmycode.user.service;
 import dev.ohhhmycode.user.dao.UserDao;
 import dev.ohhhmycode.user.domain.Level;
 import dev.ohhhmycode.user.domain.User;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,26 @@ public class UserServiceTest {
     @Autowired
     UserService userService;
     List<User> users;
+
+
+    static class TestUserServiceException extends RuntimeException {
+    }
+
+    static class TestUserService extends UserService {
+        private String id;
+
+        private TestUserService(String id) {
+            this.id = id;
+        }
+
+        @Override
+        protected void upgradeLevel(User user) {
+            if (user.getId().equals(this.id)) {
+                throw new TestUserServiceException();
+            }
+            super.upgradeLevel(user);
+        }
+    }
 
     @Before
     public void setUp() {
@@ -93,5 +114,24 @@ public class UserServiceTest {
     private void checkLevel(User user, Level expectedLevel) {
         User userUpdate = userDao.get(user.getId());
         assertThat(userUpdate.getLevel(), is(expectedLevel));
+    }
+
+    @Test
+    public void upgradeAllOrNothing() {
+        UserService testUserService = new TestUserService(users.get(3).getId());
+        testUserService.setUserDao(this.userDao);
+        userDao.deleteAll();
+
+        for (User user : users) {
+            userDao.add(user);
+        }
+
+        try {
+            testUserService.upgradeLevels();
+            Assert.fail("TestUserServiceException expected");
+        } catch (TestUserServiceException e) {
+        }
+
+        checkLevelUpgraded(users.get(1), false);
     }
 }

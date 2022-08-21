@@ -5,7 +5,7 @@
   
   <bean id="userService" class="dev.ohhhmycode.user.service.UserService">
     <property name="userDao" ref="userDao" />
-    <property name="userLevelUpgradePolicy" ref="countingBasedUserLevelUpgradePolicy" />
+<!--    <property name="userLevelUpgradePolicy" ref="countingBasedUserLevelUpgradePolicy" />-->
   </bean>
 
   <bean id="countingBasedUserLevelUpgradePolicy"
