@@ -19,6 +19,15 @@ public class User {
         this.login = login;
         this.recommend = recommend;
     }
+
+    public void upgradeLevel() {
+        Level nextLevel = getLevel().nextLevel();
+        if (nextLevel == null) {
+            throw new IllegalStateException(getLevel() + "은 업그레이드가 불가능합니다.");
+        }
+        setLevel(nextLevel);
+    }
+
     public String getId() {
         return id;
     }
