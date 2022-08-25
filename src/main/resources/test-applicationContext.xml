@@ -5,8 +5,11 @@
   
   <bean id="userService" class="dev.ohhhmycode.user.service.UserService">
     <property name="userDao" ref="userDao" />
+    <property name="transactionManager" ref="transactionManager" />
+  </bean>
+
+  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
     <property name="dataSource" ref="dataSource" />
-<!--    <property name="userLevelUpgradePolicy" ref="countingBasedUserLevelUpgradePolicy" />-->
   </bean>
 
   <bean id="countingBasedUserLevelUpgradePolicy"

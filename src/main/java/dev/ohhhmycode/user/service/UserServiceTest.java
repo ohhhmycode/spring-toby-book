@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import static dev.ohhhmycode.user.service.CountingBasedUserLevelUpgradePolicy.MIN_LOGCOUNT_FOR_SILVER;
 import static dev.ohhhmycode.user.service.CountingBasedUserLevelUpgradePolicy.MIN_RECOMMEND_FOR_GOLD;
@@ -33,7 +34,7 @@ public class UserServiceTest {
     UserService userService;
 
     @Autowired
-    DataSource dataSource;
+    PlatformTransactionManager transactionManager;
 
     List<User> users;
 
@@ -126,7 +127,7 @@ public class UserServiceTest {
     public void upgradeAllOrNothing() throws Exception {
         UserService testUserService = new TestUserService(users.get(3).getId());
         testUserService.setUserDao(this.userDao);
-        testUserService.setDataSource(this.dataSource);
+        testUserService.setTransactionManager(this.transactionManager);
         userDao.deleteAll();
 
         for (User user : users) {

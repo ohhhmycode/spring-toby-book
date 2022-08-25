@@ -4,35 +4,30 @@ package dev.ohhhmycode.user.service;
 import dev.ohhhmycode.user.dao.UserDao;
 import dev.ohhhmycode.user.domain.Level;
 import dev.ohhhmycode.user.domain.User;
+import java.sql.SQLException;
+import java.util.List;
+import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
 
 public class UserService {
 
     public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
     public static final int MIN_RECOMMEND_FOR_GOLD = 30;
     private UserDao userDao;
-    private DataSource dataSource;
+    private PlatformTransactionManager transactionManager;
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setTransactionManager (PlatformTransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
     }
 
     public void upgradeLevels() throws SQLException {
-        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
         TransactionStatus status = transactionManager.getTransaction(
             new DefaultTransactionDefinition());
 
@@ -43,9 +38,9 @@ public class UserService {
                     upgradeLevel(user);
                 }
             }
-            transactionManager.commit(status);
+            this.transactionManager.commit(status);
         } catch (Exception e) {
-            transactionManager.rollback(status);
+            this.transactionManager.rollback(status);
             throw e;
         }
     }
