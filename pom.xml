@@ -31,6 +31,22 @@
     </dependency>
 
     <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>com.springsource.javax.mail</artifactId>
+      <version>1.4.0</version>
+      <scope>system</scope>
+      <systemPath>${project.lib.path}/com.springsource.javax.mail-1.4.0.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>com.springsource.javax.activation</artifactId>
+      <version>1.1.1</version>
+      <scope>system</scope>
+      <systemPath>${project.lib.path}/com.springsource.javax.activation-1.1.1.jar</systemPath>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>com.springsource.org.apache.commons.logging</artifactId>
       <version>1.1.1</version>
@@ -103,18 +119,19 @@
     </dependency>
 
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${springframework.version}</version>
+      <scope>system</scope>
+      <systemPath>${project.lib.path}/spring-context-support-3.0.7.RELEASE.jar</systemPath>
+    </dependency>
+
+    <dependency>
       <groupId>org.junit</groupId>
       <artifactId>com.springsource.org.junit</artifactId>
       <version>4.7.0</version>
       <scope>system</scope>
       <systemPath>${project.lib.path}/com.springsource.org.junit-4.7.0.jar</systemPath>
     </dependency>
-
-    <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>javax.mail-api</artifactId>
-      <version>1.6.2</version>
-    </dependency>
-
   </dependencies>
 </project>
