@@ -8,15 +8,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-
-import org.springframework.transaction.PlatformTransactionManager;
 
 import static dev.ohhhmycode.user.service.CountingBasedUserLevelUpgradePolicy.MIN_LOGCOUNT_FOR_SILVER;
 import static dev.ohhhmycode.user.service.CountingBasedUserLevelUpgradePolicy.MIN_RECOMMEND_FOR_GOLD;
@@ -36,6 +34,9 @@ public class UserServiceTest {
 
     @Autowired
     PlatformTransactionManager transactionManager;
+
+    @Autowired
+    MailSender mailSender;
 
     List<User> users;
 
@@ -128,6 +129,7 @@ public class UserServiceTest {
         UserService testUserService = new TestUserService(users.get(3).getId());
         testUserService.setUserDao(this.userDao);
         testUserService.setTransactionManager(this.transactionManager);
+        testUserService.setMailSender(this.mailSender);
         userDao.deleteAll();
 
         for (User user : users) {

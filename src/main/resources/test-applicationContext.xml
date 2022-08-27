@@ -6,10 +6,14 @@
   <bean id="userService" class="dev.ohhhmycode.user.service.UserService">
     <property name="userDao" ref="userDao" />
     <property name="transactionManager" ref="transactionManager" />
+    <property name="mailSender" ref="mailSender"/>
   </bean>
 
   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
     <property name="dataSource" ref="dataSource" />
+  </bean>
+
+  <bean id="mailSender" class="dev.ohhhmycode.user.service.DummyMailSender">
   </bean>
 
   <bean id="countingBasedUserLevelUpgradePolicy"

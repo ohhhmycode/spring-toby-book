@@ -4,23 +4,14 @@ package dev.ohhhmycode.user.service;
 import dev.ohhhmycode.user.dao.UserDao;
 import dev.ohhhmycode.user.domain.Level;
 import dev.ohhhmycode.user.domain.User;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Properties;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.sql.DataSource;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class UserService {
 
@@ -28,6 +19,7 @@ public class UserService {
     public static final int MIN_RECOMMEND_FOR_GOLD = 30;
     private UserDao userDao;
     private PlatformTransactionManager transactionManager;
+    private MailSender mailSender;
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
@@ -35,6 +27,10 @@ public class UserService {
 
     public void setTransactionManager (PlatformTransactionManager transactionManager) {
         this.transactionManager = transactionManager;
+    }
+
+    public void setMailSender(MailSender mailSender) {
+        this.mailSender = mailSender;
     }
 
     public void upgradeLevels() throws SQLException {
@@ -62,9 +58,6 @@ public class UserService {
     }
 
     private void sendUpgradeEMail(User user) {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("mail.server.com");
-
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());
         mailMessage.setFrom("useradmin@mail.com");
