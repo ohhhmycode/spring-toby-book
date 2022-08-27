@@ -110,5 +110,11 @@
       <systemPath>${project.lib.path}/com.springsource.org.junit-4.7.0.jar</systemPath>
     </dependency>
 
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>javax.mail-api</artifactId>
+      <version>1.6.2</version>
+    </dependency>
+
   </dependencies>
 </project>
