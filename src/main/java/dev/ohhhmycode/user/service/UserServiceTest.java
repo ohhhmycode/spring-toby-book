@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+
 import org.springframework.transaction.PlatformTransactionManager;
 
 import static dev.ohhhmycode.user.service.CountingBasedUserLevelUpgradePolicy.MIN_LOGCOUNT_FOR_SILVER;
@@ -61,11 +62,11 @@ public class UserServiceTest {
     @Before
     public void setUp() {
         users = Arrays.asList(
-                new User("user-1", "User01", "p1", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER - 1, 0),
-                new User("user-2", "User02", "p2", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0),
-                new User("user-3", "User03", "p3", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD - 1),
-                new User("user-4", "User04", "p4", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD),
-                new User("user-5", "User05", "p5", Level.GOLD, 100, Integer.MAX_VALUE)
+                new User("user-1", "User01", "p1", Level.BASIC, "user1@mail.com", MIN_LOGCOUNT_FOR_SILVER - 1, 0),
+                new User("user-2", "User02", "p2", Level.BASIC, "user2@mail.com", MIN_LOGCOUNT_FOR_SILVER, 0),
+                new User("user-3", "User03", "p3", Level.SILVER, "user3@mail.com", 60, MIN_RECOMMEND_FOR_GOLD - 1),
+                new User("user-4", "User04", "p4", Level.SILVER, "user4@mail.com", 60, MIN_RECOMMEND_FOR_GOLD),
+                new User("user-5", "User05", "p5", Level.GOLD, "user5@mail.com", 100, Integer.MAX_VALUE)
         );
     }
 
@@ -94,8 +95,7 @@ public class UserServiceTest {
         User userUpdate = userDao.get(user.getId());
         if (upgraded) {
             assertThat(userUpdate.getLevel(), is(user.getLevel().nextLevel()));
-        }
-        else {
+        } else {
             assertThat(userUpdate.getLevel(), is(user.getLevel()));
         }
     }

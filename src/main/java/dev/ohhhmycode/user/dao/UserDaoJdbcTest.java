@@ -5,10 +5,12 @@ import static org.junit.Assert.assertThat;
 
 import dev.ohhhmycode.user.domain.Level;
 import dev.ohhhmycode.user.domain.User;
+
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/test-applicationContext.xml" })
+@ContextConfiguration(locations = {"/test-applicationContext.xml"})
 public class UserDaoJdbcTest {
 
     @Autowired
@@ -39,9 +41,12 @@ public class UserDaoJdbcTest {
 
     @Before
     public void setUp() {
-        user1 = new User("tester01", "테스터01", "t1-1234", Level.BASIC, 1, 0);
-        user2 = new User("tester02", "테스터02", "t2-1234", Level.SILVER, 55, 10);
-        user3 = new User("tester03", "테스터03", "t3-1234", Level.GOLD, 100, 40);
+        user1 = new User("tester01", "테스터01", "t1-1234",
+                Level.BASIC, "tester01@mail.com", 1, 0);
+        user2 = new User("tester02", "테스터02", "t2-1234",
+                Level.SILVER, "tester02@mail.com", 55, 10);
+        user3 = new User("tester03", "테스터03", "t3-1234",
+                Level.GOLD, "tester03@mail.com", 100, 40);
     }
 
     @Test
@@ -156,6 +161,7 @@ public class UserDaoJdbcTest {
         assertThat(user1.getName(), is(user2.getName()));
         assertThat(user1.getPassword(), is(user2.getPassword()));
         assertThat(user1.getLevel(), is(user2.getLevel()));
+        assertThat(user1.getEmail(), is(user2.getEmail()));
         assertThat(user1.getLogin(), is(user2.getLogin()));
         assertThat(user1.getRecommend(), is(user2.getRecommend()));
     }
