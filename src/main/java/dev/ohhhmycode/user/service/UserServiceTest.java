@@ -34,7 +34,7 @@ public class UserServiceTest {
     UserDao userDao;
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
 
     @Autowired
     PlatformTransactionManager transactionManager;
@@ -48,7 +48,7 @@ public class UserServiceTest {
     static class TestUserServiceException extends RuntimeException {
     }
 
-    static class TestUserService extends UserService {
+    static class TestUserService extends UserServiceImpl {
         private String id;
 
         private TestUserService(String id) {
@@ -156,9 +156,8 @@ public class UserServiceTest {
 
     @Test
     public void upgradeAllOrNothing() throws Exception {
-        UserService testUserService = new TestUserService(users.get(3).getId());
+        UserServiceImpl testUserService = new TestUserService(users.get(3).getId());
         testUserService.setUserDao(this.userDao);
-        testUserService.setTransactionManager(this.transactionManager);
         testUserService.setMailSender(this.mailSender);
         userDao.deleteAll();
 
